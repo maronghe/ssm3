@@ -1,0 +1,40 @@
+<?xml version="1.0" encoding="UTF-8" ?> 
+<!DOCTYPE mapper PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN" "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<!--指向接口 -->
+<mapper namespace="com.logan.dao.UserMapper">
+    <!--  
+      id：唯一标识一个statement  
+      #{}：表示一个占位符，如果#{}中传入简单类型的参数，#{}中的名称随意  
+      parameterType：输入参数的类型，通过#{}接收parameterType输入的参数  
+      resultType：输出结果类型，不管返回是多条还是单条，指定单条记录映射的pojo类型  
+      resultMap:输出结果类型
+    -->	
+    <insert id="insert" parameterType="map">
+        insert into t_user(userid,username,password,name) 
+          values(#{id},#{username},#{password},#{name})       
+    </insert> 	
+    
+    <update id="update" parameterType="map">
+        update t_user set username=#{userName},name=#{name},password=#{password} where userid=#{userId}
+    </update>    
+    
+    <delete id="delete" parameterType="map">
+        delete from t_user where userid=#{userId}
+    </delete>   
+ 
+	<!--根据用户名称查询用户信息，可能返回多条    ${}：表示sql的拼接，通过${}接收参数，将参数的内容不加任何修饰拼接在sql中。-->
+ 
+	<select id="getUser" parameterType="com.logan.pojo.User" resultType="com.logan.pojo.User">
+		select u.userId,u.username,u.name,u.password from t_user u where u.username=#{userName}	
+		and u.password=#{password}
+	</select>
+	
+	
+	<select id="getUserInfo" parameterType="com.logan.pojo.User" resultType="com.logan.pojo.User">
+		select u.userid,u.username,u.name,u.password from t_user u where u.username=#{userName}			
+	</select>
+	
+	<select id="getUserList" resultType="com.logan.pojo.User">
+	    select userid,username,password,name from t_user
+	</select>    
+</mapper>
